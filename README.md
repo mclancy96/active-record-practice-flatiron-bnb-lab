@@ -123,47 +123,114 @@ rake db:migrate
 
 ## Part 2: Model Associations
 
-Now implement the ActiveRecord associations in your model files. Consider these relationships:
+Now you need to implement the ActiveRecord associations in your model files. This is where you'll define how your models relate to each other. Study your database schema and think carefully about the relationships between entities.
 
-### User Model (`app/models/user.rb`)
+### Understanding Relationships
 
-A user can be both a host and a guest:
+Look at your foreign keys - they tell a story about how data connects:
 
-- As a host: has many listings
-- As a host: has many reservations through their listings
-- As a guest: has many reservations (called "trips")
-- As a guest: has many reviews
+- When you see a `_id` column, that model belongs to another model
+- The model being referenced likely has many of the models that reference it
+- Some models might be connected through intermediate models
 
-### City Model (`app/models/city.rb`)
+### User Model - The Tricky One (`app/models/user.rb`)
 
-- Has many neighborhoods
-- Has many listings through neighborhoods
+The User model is special because users play **two different roles** in your application:
 
-### Neighborhood Model (`app/models/neighborhood.rb`)
+1. **As hosts**: Users can create listings and receive guests
+2. **As guests**: Users can make reservations and write reviews
 
-- Belongs to a city
-- Has many listings
+This creates a challenge: how do you handle the same model (User) acting in different capacities?
 
-### Listing Model (`app/models/listing.rb`)
+**Hint for the User model**: You'll need to set up associations that distinguish between these roles. Consider:
 
-- Belongs to a neighborhood
-- Belongs to a host (user)
-- Has many reservations
-- Has many reviews through reservations
-- Has many guests through reservations
+- When a user acts as a host, they "own" certain records
+- When a user acts as a guest, they're referenced differently in other models
+- You might need to use `class_name` and `foreign_key` options to specify which User role you're referring to
+- Some associations might need custom names that make the role clear (like "trips" instead of "reservations" for a guest's bookings)
 
-### Reservation Model (`app/models/reservation.rb`)
+**Think about it**: If you're looking at a reservation record, you need to know both who is hosting (through the listing) and who is staying (the guest). How would you set up associations to make both of these relationships clear?
 
-- Belongs to a listing
-- Belongs to a guest (user)
-- Has many reviews
+#### Example: User Model Implementation
 
-### Review Model (`app/models/review.rb`)
+Here's a concrete example to get you started with the User model's dual-role challenge:
 
-- Belongs to a guest (user)
-- Belongs to a reservation
+```ruby
+class User < ActiveRecord::Base
+  # When a user acts as a HOST:
+  has_many :listings, foreign_key: 'host_id'
 
-**Key Challenge**: Notice how `User` has multiple relationships - they can be both hosts and guests. You'll need to use `class_name` and `foreign_key` options for some associations.
+  # When a user acts as a GUEST:
+  has_many :trips, class_name: 'Reservation', foreign_key: 'guest_id'
+
+  # You'll need to figure out the rest...
+  # Think about:
+  # - How does a host get to their reservations?
+  # - How does a host see all their guests?
+  # - How does a guest access their reviews?
+end
+```
+
+**Breaking down this example:**
+
+- `has_many :listings, foreign_key: 'host_id'` - This tells ActiveRecord that when we call `user.listings`, it should look for records in the listings table where `host_id` matches this user's id
+- `has_many :trips, class_name: 'Reservation', foreign_key: 'guest_id'` - This creates a custom association name ("trips") that points to the Reservation model, but uses the `guest_id` column to find the right records
+
+**Your turn:** Based on this pattern, can you figure out how to set up associations for:
+
+- A host getting all reservations for their listings?
+- A host seeing all the guests who have stayed at their places?
+- A guest accessing the reviews they've written?
+
+**Hint**: You might need `has_many :through` for some of these!
+
+### Other Models - Figure These Out
+
+For the remaining models, analyze your schema and think through the relationships:
+
+**City Model (`app/models/city.rb`)**
+
+- Look at which models reference cities (directly or indirectly)
+- Consider what you can reach from a city through its immediate connections
+
+**Neighborhood Model (`app/models/neighborhood.rb`)**
+
+- Check your foreign keys - what does a neighborhood belong to?
+- What models reference neighborhoods?
+
+**Listing Model (`app/models/listing.rb`)**
+
+- Examine the `host_id` and `neighborhood_id` columns - what do these tell you?
+- Think about what gets created "under" a listing
+- Consider how guests interact with listings
+
+**Reservation Model (`app/models/reservation.rb`)**
+
+- Look at your foreign keys: `listing_id` and `guest_id`
+- What models might reference reservations?
+
+**Review Model (`app/models/review.rb`)**
+
+- Check what foreign keys exist on reviews
+- Think about who writes reviews and what they're reviewing
+
+### Testing Your Associations
+
+As you implement each association, test it in the console to make sure it works:
+
+```bash
+rake console
+```
+
+Try queries like:
+
+```ruby
+# Does this make sense for your data model?
+some_model.other_models.count
+other_model.some_models.first
+```
+
+**Remember**: The goal is to be able to navigate between related data easily. If you find yourself writing complex queries to get from one model to related data, you might be missing an association!
 
 ## Part 3: Seed Your Database
 
@@ -351,6 +418,5 @@ Once you've completed the basic requirements, try these challenges:
 5. **Add user preferences** - favorite listings, saved searches
 6. **Implement a rating system** - beyond simple averages
 7. **Create reports** - monthly earnings, occupancy rates, etc.
-
 
 Good luck building your ActiveRecord skills! 🏠✨

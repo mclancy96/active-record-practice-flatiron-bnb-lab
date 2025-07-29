@@ -1,9 +1,6 @@
 require 'bundler/setup'
 Bundler.require(:default, ENV['RACK_ENV'] || 'development')
 
-require 'bundler/setup'
-Bundler.require(:default, ENV['RACK_ENV'] || 'development')
-
 # Set up ActiveRecord logger
 require 'logger'
 ActiveRecord::Base.logger = Logger.new(STDOUT) if ENV['RACK_ENV'] == 'development'
