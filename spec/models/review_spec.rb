@@ -196,6 +196,7 @@ describe Review do
       it 'returns overall average rating across all reviews' do
         # (5 + 5 + 4 + 3 + 2 + 1 + 5) / 7 = 25 / 7 ≈ 3.57
         # Including the original review (rating: 5)
+        review # Force creation of the original review
         average = Review.average_rating
         expect(average).to be_between(3.0, 4.0)
         expect(average.round(2)).to eq(3.57)
