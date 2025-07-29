@@ -23,7 +23,7 @@ You're going to build a simplified version of Airbnb using ActiveRecord! This la
 
 2. **Set up the database:**
    ```bash
-   rake db:create
+   bundle exec rake db:create
    ```
 
 ## Part 1: Database Migrations
@@ -42,12 +42,9 @@ You need to create migrations for six related models. Think carefully about the 
 Create migration files for each model. Use descriptive names that follow Rails conventions:
 
 ```bash
-rake db:create_migration NAME=create_users
-rake db:create_migration NAME=create_cities
-rake db:create_migration NAME=create_neighborhoods
-rake db:create_migration NAME=create_listings
-rake db:create_migration NAME=create_reservations
-rake db:create_migration NAME=create_reviews
+bundle exec rake db:create_migration NAME=create_users
+bundle exec rake db:create_migration NAME=create_cities
+...
 ```
 
 ### Step 2: Define Your Schema
@@ -109,16 +106,24 @@ Think about what attributes each model needs and their data types:
 
 ### Step 3: Run Your Migrations
 
+After creating your migration files, you need to run them in both development and test environments:
+
 ```bash
-rake db:migrate
+# Run migrations for development
+bundle exec rake db:migrate
+
+# Run migrations for test environment (needed for running specs)
+RACK_ENV=test bundle exec rake db:migrate
 ```
+
+**Important**: The test environment uses a separate database (`db/test.sqlite3`), so you must run migrations in both environments for the specs to work properly.
 
 **Tip**: If you make a mistake, you can rollback and fix it:
 
 ```bash
-rake db:rollback
+bundle exec rake db:rollback
 # Edit your migration file
-rake db:migrate
+bundle exec rake db:migrate
 ```
 
 ## Part 2: Model Associations
@@ -219,7 +224,7 @@ For the remaining models, analyze your schema and think through the relationship
 As you implement each association, test it in the console to make sure it works:
 
 ```bash
-rake console
+bundle exec rake console
 ```
 
 Try queries like:
@@ -237,7 +242,7 @@ other_model.some_models.first
 Once you've created your models and associations, populate your database with the comprehensive seed data:
 
 ```bash
-rake db:seed
+bundle exec rake db:seed
 ```
 
 This will create a rich dataset including:
@@ -261,7 +266,7 @@ The seed data is designed to help you practice complex queries and understand th
 After seeding, test your associations in the console:
 
 ```bash
-rake console
+bundle exec rake console
 ```
 
 Try these example queries to verify your associations work:
@@ -391,7 +396,7 @@ The tests will verify:
 Use the console to test your methods interactively:
 
 ```bash
-rake console
+bundle exec rake console
 ```
 
 ## Final Tips & Best Practices
