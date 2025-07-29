@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  let(:katie) { User.create(name: 'Katie') }
+  let(:katie) { User.create(name: 'Katie', email: 'katie@example.com') }
 
   it 'has a name' do
     expect(katie.name).to eq('Katie')
@@ -37,8 +37,8 @@ describe User do
       )
     end
 
-    let(:logan) { User.create(name: 'Logan') }
-    let(:amanda) { User.create(name: 'Amanda') }
+    let(:logan) { User.create(name: 'Logan', email: 'logan@example.com') }
+    let(:amanda) { User.create(name: 'Amanda', email: 'amanda@example.com') }
 
     let(:reservation1) do
       Reservation.create(
@@ -141,7 +141,7 @@ describe User do
     end
 
     context 'as guest' do
-      let(:host_user) { User.create(name: 'Host') }
+      let(:host_user) { User.create(name: 'Host', email: 'host@example.com') }
       let(:la) { City.create(name: 'Los Angeles') }
       let(:hollywood) { Neighborhood.create(name: 'Hollywood', city: la) }
 
@@ -246,9 +246,9 @@ describe User do
     end
 
     describe 'class methods' do
-      let(:host1) { User.create(name: 'Host1') }
-      let(:host2) { User.create(name: 'Host2') }
-      let(:guest_only) { User.create(name: 'GuestOnly') }
+      let(:host1) { User.create(name: 'Host1', email: 'host1@example.com') }
+      let(:host2) { User.create(name: 'Host2', email: 'host2@example.com') }
+      let(:guest_only) { User.create(name: 'GuestOnly', email: 'guest@example.com') }
 
       let!(:host1_listing1) do
         Listing.create(

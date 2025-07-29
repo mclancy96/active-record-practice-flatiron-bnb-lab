@@ -1,16 +1,16 @@
 source 'https://rubygems.org'
 
+gem 'activerecord'
 gem 'pry'
+gem 'rake'
 gem 'sinatra'
 gem 'sinatra-activerecord'
-gem 'activerecord'
 gem 'sqlite3'
-gem 'rake'
 
 group :development, :test do
+  gem 'database_cleaner'
   gem 'rspec'
   gem 'rubocop'
-  gem 'database_cleaner'
 end
 
 group :development do

@@ -57,17 +57,21 @@ Think about what attributes each model needs and their data types:
 #### Users Table
 
 - `name` (string) - The user's name
+- `email` (string) - User's email address (add unique index)
 - `created_at` and `updated_at` (datetime) - Rails timestamps
 
 #### Cities Table
 
 - `name` (string) - The city name
+- `state` (string) - State/province abbreviation
+- `country` (string) - Country name
 - `created_at` and `updated_at` (datetime)
 
 #### Neighborhoods Table
 
 - `name` (string) - The neighborhood name
 - `city_id` (integer) - Foreign key to cities table
+- `zip_code` (string) - Postal code for the area
 - `created_at` and `updated_at` (datetime)
 
 #### Listings Table
@@ -76,15 +80,19 @@ Think about what attributes each model needs and their data types:
 - `description` (text) - Longer description text
 - `address` (string) - The street address
 - `listing_type` (string) - e.g., "private room", "entire home"
-- `price` (decimal) - Price per night
+- `price` (decimal, precision: 8, scale: 2) - Price per night
+- `max_guests` (integer) - Maximum number of guests
 - `neighborhood_id` (integer) - Foreign key to neighborhoods
 - `host_id` (integer) - Foreign key to users (the host)
+- `active` (boolean, default: true) - Whether listing is currently active
 - `created_at` and `updated_at` (datetime)
 
 #### Reservations Table
 
 - `checkin` (date) - Check-in date
 - `checkout` (date) - Check-out date
+- `guest_count` (integer) - Number of guests
+- `status` (string, default: 'confirmed') - Reservation status
 - `listing_id` (integer) - Foreign key to listings
 - `guest_id` (integer) - Foreign key to users (the guest)
 - `created_at` and `updated_at` (datetime)
@@ -93,6 +101,8 @@ Think about what attributes each model needs and their data types:
 
 - `description` (text) - The review text
 - `rating` (integer) - Rating from 1-5
+- `cleanliness_rating` (integer) - Specific rating for cleanliness (1-5)
+- `communication_rating` (integer) - Host communication rating (1-5)
 - `guest_id` (integer) - Foreign key to users (who wrote the review)
 - `reservation_id` (integer) - Foreign key to reservations
 - `created_at` and `updated_at` (datetime)
@@ -294,6 +304,8 @@ Add these **class methods** to the Review class:
 2. **`.lowest_rated`** - Returns reviews with a rating of 1 or 2
 3. **`.most_recent(limit = 10)`** - Returns the most recent reviews (default 10)
 4. **`.average_rating`** - Returns the overall average rating across all reviews
+5. **`.by_rating(rating)`** - Returns all reviews with a specific rating
+6. **`.detailed_ratings`** - Returns a hash with count of each rating (1-5)
 
 ## Part 5: Testing Your Work
 
@@ -309,47 +321,36 @@ The tests will verify:
 - ✅ Your associations work properly
 - ✅ Your custom methods return expected results
 
-## Part 6: Interactive Testing
-
 Use the console to test your methods interactively:
 
 ```bash
 rake console
 ```
 
-Try these examples:
+## Final Tips & Best Practices
 
-```ruby
-# Test associations
-user = User.first
-user.listings
-user.trips
+### Debugging Checklist
 
-# Test custom methods
-user.host?
-user.trip_count
-Listing.highest_rateds
-City.most_res
+When your method isn't working:
 
-# Test queries
-User.hosts.count
-Listing.by_city("NYC")
-```
+1. **Check the association** - does `user.listings` return what you expect?
+2. **Test the SQL** - use `.to_sql` to see what query is being generated
+3. **Check for typos** - method names, column names, association names
+4. **Verify data exists** - are there records to work with?
+5. **Use `binding.pry`** - step through your method line by line
+6. **Check the return value** - methods should return what you expect
 
-## Final Tips
+### Additional Practice Ideas
 
-- **Write clean, modular code** with clear functions for each task
-- **Test your code frequently** to catch and fix errors early
-- **Use `rake console`** to test methods interactively
-- **Prioritize getting things working** before optimizing or refactoring
-- **Read error messages carefully** - they often tell you exactly what's wrong
-- **Use `binding.pry`** to debug when you're stuck
+Once you've completed the basic requirements, try these challenges:
 
-## Common Gotchas
+1. **Build a booking system** - prevent double bookings for the same dates
+2. **Add price calculations** - include taxes, fees, and discounts
+3. **Create a search system** - find listings by multiple criteria
+4. **Build analytics** - track popular destinations, peak seasons, etc.
+5. **Add user preferences** - favorite listings, saved searches
+6. **Implement a rating system** - beyond simple averages
+7. **Create reports** - monthly earnings, occupancy rates, etc.
 
-1. **Foreign Key Names**: Make sure your foreign keys follow the convention (`model_id`)
-2. **Association Names**: Use descriptive names when you have multiple relationships to the same model
-3. **Class vs Instance Methods**: Remember the difference between `self.method_name` (class) and `method_name` (instance)
-4. **Nil Checks**: Always consider what happens when associations return `nil` or empty collections
 
 Good luck building your ActiveRecord skills! 🏠✨

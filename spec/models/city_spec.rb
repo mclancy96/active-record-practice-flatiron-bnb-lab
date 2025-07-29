@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe City do
-  let(:nyc) { City.create(name: 'NYC') }
+  let(:nyc) { City.create(name: 'NYC', state: 'NY', country: 'USA') }
 
   it 'has a name' do
     expect(nyc.name).to eq('NYC')
@@ -16,7 +16,7 @@ describe City do
   end
 
   context 'listings' do
-    let(:user) { User.create(name: 'user') }
+    let(:user) { User.create(name: 'user', email: 'user@example.com') }
     let(:fidi) { Neighborhood.create(name: 'Fi Di', city: nyc) }
     let!(:listing) do
       Listing.create(
@@ -36,17 +36,17 @@ describe City do
   end
 
   context 'class methods' do
-    let(:sf) { City.create(name: 'San Francisco') }
-    let(:chicago) { City.create(name: 'Chicago') }
+    let(:sf) { City.create(name: 'San Francisco', state: 'CA', country: 'USA') }
+    let(:chicago) { City.create(name: 'Chicago', state: 'IL', country: 'USA') }
 
     let(:nyc_neighborhood) { Neighborhood.create(name: 'Manhattan', city: nyc) }
     let(:sf_neighborhood) { Neighborhood.create(name: 'Mission', city: sf) }
     let(:chicago_neighborhood) { Neighborhood.create(name: 'Loop', city: chicago) }
 
-    let(:host1) { User.create(name: 'Host1') }
-    let(:host2) { User.create(name: 'Host2') }
-    let(:host3) { User.create(name: 'Host3') }
-    let(:guest) { User.create(name: 'Guest') }
+    let(:host1) { User.create(name: 'Host1', email: 'host1@example.com') }
+    let(:host2) { User.create(name: 'Host2', email: 'host2@example.com') }
+    let(:host3) { User.create(name: 'Host3', email: 'host3@example.com') }
+    let(:guest) { User.create(name: 'Guest', email: 'guest@example.com') }
 
     # NYC listings (2 listings)
     let!(:nyc_listing1) do

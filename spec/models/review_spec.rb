@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Review do
-  let(:nyc) { City.create(name: 'NYC') }
-  let(:fidi) { Neighborhood.create(name: 'Fi Di', city: nyc) }
-  let(:amanda) { User.create(name: 'Amanda') }
-  let(:logan) { User.create(name: 'Logan') }
+  let(:nyc) { City.create(name: 'NYC', state: 'NY', country: 'USA') }
+  let(:fidi) { Neighborhood.create(name: 'Fi Di', city: nyc, zip_code: '10004') }
+  let(:amanda) { User.create(name: 'Amanda', email: 'amanda@example.com') }
+  let(:logan) { User.create(name: 'Logan', email: 'logan@example.com') }
   let(:listing) do
     Listing.create(
       address: '123 Main Street',
@@ -12,6 +12,8 @@ describe Review do
       title: 'Beautiful Apartment on Main Street',
       description: "My apartment is great. there's a bedroom. close to subway....blah blah",
       price: 50.00,
+      max_guests: 2,
+      active: true,
       neighborhood: fidi,
       host: amanda
     )
@@ -20,6 +22,8 @@ describe Review do
     Reservation.create(
       checkin: '2014-04-25',
       checkout: '2014-04-30',
+      guest_count: 2,
+      status: 'confirmed',
       listing: listing,
       guest: logan
     )
@@ -28,6 +32,8 @@ describe Review do
     Review.create(
       description: 'This place was great!',
       rating: 5,
+      cleanliness_rating: 5,
+      communication_rating: 4,
       guest: logan,
       reservation: reservation
     )

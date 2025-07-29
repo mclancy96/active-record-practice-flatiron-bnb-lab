@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Neighborhood do
-  let(:nyc) { City.create(name: 'NYC') }
-  let(:brighton_beach) { Neighborhood.create(name: 'Brighton Beach', city: nyc) }
+  let(:nyc) { City.create(name: 'NYC', state: 'NY', country: 'USA') }
+  let(:brighton_beach) { Neighborhood.create(name: 'Brighton Beach', city: nyc, zip_code: '11235') }
 
   it 'has a name' do
     expect(brighton_beach.name).to eq('Brighton Beach')
@@ -13,9 +13,9 @@ describe Neighborhood do
   end
 
   context 'listings' do
-    let(:user1) { User.create(name: 'Host1') }
-    let(:user2) { User.create(name: 'Host2') }
-    let(:guest) { User.create(name: 'Guest') }
+    let(:user1) { User.create(name: 'Host1', email: 'host1@example.com') }
+    let(:user2) { User.create(name: 'Host2', email: 'host2@example.com') }
+    let(:guest) { User.create(name: 'Guest', email: 'guest@example.com') }
 
     let!(:listing1) do
       Listing.create(
@@ -96,14 +96,14 @@ describe Neighborhood do
   end
 
   context 'class methods' do
-    let(:sf) { City.create(name: 'San Francisco') }
-    let(:mission) { Neighborhood.create(name: 'Mission', city: sf) }
-    let(:fidi) { Neighborhood.create(name: 'Financial District', city: nyc) }
+    let(:sf) { City.create(name: 'San Francisco', state: 'CA', country: 'USA') }
+    let(:mission) { Neighborhood.create(name: 'Mission', city: sf, zip_code: '94103') }
+    let(:fidi) { Neighborhood.create(name: 'Financial District', city: nyc, zip_code: '10004') }
 
-    let(:host1) { User.create(name: 'Host1') }
-    let(:host2) { User.create(name: 'Host2') }
-    let(:host3) { User.create(name: 'Host3') }
-    let(:guest) { User.create(name: 'Guest') }
+    let(:host1) { User.create(name: 'Host1', email: 'host1@example.com') }
+    let(:host2) { User.create(name: 'Host2', email: 'host2@example.com') }
+    let(:host3) { User.create(name: 'Host3', email: 'host3@example.com') }
+    let(:guest) { User.create(name: 'Guest', email: 'guest@example.com') }
 
     # Brighton Beach listings (expensive)
     let!(:bb_listing1) do

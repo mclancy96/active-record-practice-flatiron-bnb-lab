@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Listing do
-  let(:new_york_city) { City.create(name: 'NYC') }
-  let(:financial_district) { Neighborhood.create(name: 'Fi Di', city: new_york_city) }
-  let(:amanda) { User.create(name: 'Amanda') }
-  let(:logan) { User.create(name: 'Logan') }
+  let(:new_york_city) { City.create(name: 'NYC', state: 'NY', country: 'USA') }
+  let(:financial_district) { Neighborhood.create(name: 'Fi Di', city: new_york_city, zip_code: '10004') }
+  let(:amanda) { User.create(name: 'Amanda', email: 'amanda@example.com') }
+  let(:logan) { User.create(name: 'Logan', email: 'logan@example.com') }
   let!(:listing) do
     Listing.create(
       address: '123 Main Street',
@@ -12,6 +12,8 @@ describe Listing do
       title: 'Beautiful Apartment on Main Street',
       description: "My apartment is great. there's a bedroom. close to subway....blah blah",
       price: 50.00,
+      max_guests: 2,
+      active: true,
       neighborhood: financial_district,
       host: amanda
     )
@@ -168,14 +170,14 @@ describe Listing do
   end
 
   context 'class methods' do
-    let(:sf) { City.create(name: 'San Francisco') }
-    let(:mission) { Neighborhood.create(name: 'Mission', city: sf) }
-    let(:chicago) { City.create(name: 'Chicago') }
-    let(:loop_area) { Neighborhood.create(name: 'Loop', city: chicago) }
+    let(:sf) { City.create(name: 'San Francisco', state: 'CA', country: 'USA') }
+    let(:mission) { Neighborhood.create(name: 'Mission', city: sf, zip_code: '94103') }
+    let(:chicago) { City.create(name: 'Chicago', state: 'IL', country: 'USA') }
+    let(:loop_area) { Neighborhood.create(name: 'Loop', city: chicago, zip_code: '60601') }
 
-    let(:host1) { User.create(name: 'Host1') }
-    let(:host2) { User.create(name: 'Host2') }
-    let(:guest) { User.create(name: 'Guest') }
+    let(:host1) { User.create(name: 'Host1', email: 'host1@example.com') }
+    let(:host2) { User.create(name: 'Host2', email: 'host2@example.com') }
+    let(:guest) { User.create(name: 'Guest', email: 'guest@example.com') }
 
     let!(:sf_listing) do
       Listing.create(
