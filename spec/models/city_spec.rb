@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 describe City do
   let(:nyc) { City.create(name: 'NYC') }

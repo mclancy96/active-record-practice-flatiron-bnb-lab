@@ -1,16 +1,18 @@
 source 'https://rubygems.org'
 
 gem 'pry'
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~>5.0.7.1'
-gem "sinatra-activerecord"
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~>1.3.6'
+gem 'sinatra'
+gem 'sinatra-activerecord'
+gem 'activerecord'
+gem 'sqlite3'
+gem 'rake'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-
-  gem 'rspec-rails'
+  gem 'rspec'
+  gem 'rubocop'
   gem 'database_cleaner'
+end
+
+group :development do
+  gem 'shotgun'
 end
