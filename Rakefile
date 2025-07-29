@@ -1,4 +1,4 @@
-require './app'
+require_relative 'config/environment'
 require 'sinatra/activerecord/rake'
 
 desc 'Start a Pry console with all models loaded'
