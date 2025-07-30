@@ -24,6 +24,7 @@ You're going to build a simplified version of Airbnb using ActiveRecord! This la
    ```
 
 2. **Set up the database:**
+
    ```bash
    bundle exec rake db:create
    ```
@@ -83,6 +84,10 @@ Think about what attributes each model needs and their data types:
 - `max_guests` (integer) - Maximum number of guests
 - `neighborhood_id` (integer) - Foreign key to neighborhoods
 - `host_id` (integer) - Foreign key to users (the host)
+  - For this, you'll need to tell ActiveRecord which table to use:
+
+  - `foreign_key: { to_table: :users }`
+
 - `active` (boolean, default: true) - Whether listing is currently active
 - `created_at` and `updated_at` (datetime)
 
@@ -94,6 +99,8 @@ Think about what attributes each model needs and their data types:
 - `status` (string, default: 'confirmed') - Reservation status
 - `listing_id` (integer) - Foreign key to listings
 - `guest_id` (integer) - Foreign key to users (the guest)
+  - For this, you'll need to tell ActiveRecord which table to use:
+  - `foreign_key: { to_table: :users }`
 - `created_at` and `updated_at` (datetime)
 
 #### Reviews Table
