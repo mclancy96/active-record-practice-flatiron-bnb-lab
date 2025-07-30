@@ -1,5 +1,7 @@
 # ActiveRecord Practice: Flatiron BnB Lab
 
+> **Note:** This is a fork of [learn-co-curriculum/active-record-practice-flatiron-bnb-lab](https://github.com/learn-co-curriculum/active-record-practice-flatiron-bnb-lab) that has been adapted to focus specifically on Active Record concepts and practices.
+
 ## Learning Objectives
 
 After completing this lab, you will be able to:
